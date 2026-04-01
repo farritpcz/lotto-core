@@ -18,17 +18,28 @@ type LotteryType string
 const (
 	LotteryTypeThai          LotteryType = "THAI"           // หวยไทย (ใต้ดิน) — ออกผล 1, 16 ของเดือน
 	LotteryTypeLao           LotteryType = "LAO"            // หวยลาว — ออกผลตามรอบลาว
+	LotteryTypeHanoi         LotteryType = "HANOI"          // หวยฮานอย — ออกผลทุกวัน 18:30
+	LotteryTypeMalay         LotteryType = "MALAY"          // หวยมาเลย์ — ออกผลตามรอบมาเลเซีย
+	LotteryTypeLao9          LotteryType = "LAO_STAR"       // หวยลาว Star (9+) — ออกผลหลายรอบ/วัน
+	LotteryTypeBAAC          LotteryType = "BAAC"           // หวย ธกส. — ออกผลตามรอบ ธกส.
+	LotteryTypeGSB           LotteryType = "GSB"            // หวยออมสิน — ออกผลตามรอบออมสิน
 	LotteryTypeStockTH       LotteryType = "STOCK_TH"       // หวยหุ้นไทย — ออกผลตามตลาดหุ้น จ-ศ
 	LotteryTypeStockForeign  LotteryType = "STOCK_FOREIGN"  // หวยหุ้นต่างประเทศ — ออกผลตามตลาดแต่ละประเทศ
 	LotteryTypeYeekee        LotteryType = "YEEKEE"         // หวยยี่กี — ออกผลทุก 15 นาที (88 รอบ/วัน)
+	LotteryTypeYeekee5       LotteryType = "YEEKEE_5"       // ยี่กี 5 นาที — ออกผลทุก 5 นาที
+	LotteryTypeYeekee15      LotteryType = "YEEKEE_15"      // ยี่กี 15 นาที (มาตรฐาน)
+	LotteryTypeYeekeeVIP     LotteryType = "YEEKEE_VIP"     // ยี่กี VIP — rate สูงกว่าปกติ
 	LotteryTypeCustom        LotteryType = "CUSTOM"         // หวยอื่นๆ — configurable
 )
 
 // IsValid ตรวจสอบว่า LotteryType ถูกต้องหรือไม่
 func (lt LotteryType) IsValid() bool {
 	switch lt {
-	case LotteryTypeThai, LotteryTypeLao, LotteryTypeStockTH,
-		LotteryTypeStockForeign, LotteryTypeYeekee, LotteryTypeCustom:
+	case LotteryTypeThai, LotteryTypeLao, LotteryTypeHanoi, LotteryTypeMalay,
+		LotteryTypeLao9, LotteryTypeBAAC, LotteryTypeGSB,
+		LotteryTypeStockTH, LotteryTypeStockForeign,
+		LotteryTypeYeekee, LotteryTypeYeekee5, LotteryTypeYeekee15, LotteryTypeYeekeeVIP,
+		LotteryTypeCustom:
 		return true
 	}
 	return false
@@ -37,7 +48,11 @@ func (lt LotteryType) IsValid() bool {
 // IsAutoResult ตรวจสอบว่าประเภทหวยนี้ออกผลอัตโนมัติหรือไม่
 // true = ระบบออกผลเอง (Yeekee), false = admin กรอกผล (Thai, Lao, Stock)
 func (lt LotteryType) IsAutoResult() bool {
-	return lt == LotteryTypeYeekee
+	switch lt {
+	case LotteryTypeYeekee, LotteryTypeYeekee5, LotteryTypeYeekee15, LotteryTypeYeekeeVIP:
+		return true
+	}
+	return false
 }
 
 // =============================================================================
@@ -52,8 +67,11 @@ const (
 	BetType3Top    BetType = "3TOP"    // 3 ตัวบน — ตรงตำแหน่ง เช่น 847
 	BetType3Bottom BetType = "3BOTTOM" // 3 ตัวล่าง — ตรงตำแหน่ง (บางระบบไม่มี)
 	BetType3Tod    BetType = "3TOD"    // 3 ตัวโต๊ด — สลับตำแหน่งได้ เช่น 847 = 478 = 748 ...
+	BetType3Front  BetType = "3FRONT"  // 3 ตัวหน้า — 3 ตัวแรกของเลขท้าย 6 ตำแหน่ง
 	BetType2Top    BetType = "2TOP"    // 2 ตัวบน — 2 ตัวท้ายของ 3 ตัวบน เช่น 47
 	BetType2Bottom BetType = "2BOTTOM" // 2 ตัวล่าง — 2 ตัวล่าง เช่น 56
+	BetType4Top    BetType = "4TOP"    // 4 ตัวบน — ตรงตำแหน่ง เช่น 8471
+	BetType4Tod    BetType = "4TOD"    // 4 ตัวโต๊ด — สลับตำแหน่งได้ เช่น 8471 = 1748 ...
 	BetTypeRunTop  BetType = "RUN_TOP" // วิ่งบน — เลขตัวเดียว ถ้าอยู่ใน 3 ตัวบน ถือว่าถูก
 	BetTypeRunBot  BetType = "RUN_BOT" // วิ่งล่าง — เลขตัวเดียว ถ้าอยู่ใน 2 ตัวล่าง ถือว่าถูก
 )
@@ -61,8 +79,9 @@ const (
 // IsValid ตรวจสอบว่า BetType ถูกต้องหรือไม่
 func (bt BetType) IsValid() bool {
 	switch bt {
-	case BetType3Top, BetType3Bottom, BetType3Tod,
-		BetType2Top, BetType2Bottom, BetTypeRunTop, BetTypeRunBot:
+	case BetType3Top, BetType3Bottom, BetType3Tod, BetType3Front,
+		BetType2Top, BetType2Bottom, BetType4Top, BetType4Tod,
+		BetTypeRunTop, BetTypeRunBot:
 		return true
 	}
 	return false
@@ -72,7 +91,9 @@ func (bt BetType) IsValid() bool {
 // เช่น 3TOP → 3 หลัก, 2TOP → 2 หลัก, RUN_TOP → 1 หลัก
 func (bt BetType) DigitCount() int {
 	switch bt {
-	case BetType3Top, BetType3Bottom, BetType3Tod:
+	case BetType4Top, BetType4Tod:
+		return 4
+	case BetType3Top, BetType3Bottom, BetType3Tod, BetType3Front:
 		return 3
 	case BetType2Top, BetType2Bottom:
 		return 2
