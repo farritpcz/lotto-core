@@ -14,6 +14,8 @@
 package payout
 
 import (
+	"github.com/shopspring/decimal"
+
 	"github.com/farritpcz/lotto-core/types"
 )
 
@@ -69,16 +71,18 @@ func SettleRound(input SettleRoundInput) SettleRoundOutput {
 	// 2. สรุปผล
 	totalWinners, totalWinAmount, totalLosers := SummarizeResults(betResults)
 
-	// 3. คำนวณยอดแทงรวม
-	var totalBetAmount float64
+	// 3. ⚠️ คำนวณยอดแทงรวม — ใช้ decimal ป้องกัน precision error
+	totalBetDec := decimal.Zero
 	for _, bet := range input.Bets {
-		if !bet.Status.IsSettled() { // นับเฉพาะ pending
-			totalBetAmount += bet.Amount
+		if !bet.Status.IsSettled() {
+			totalBetDec = totalBetDec.Add(decimal.NewFromFloat(bet.Amount))
 		}
 	}
+	totalBetAmount, _ := totalBetDec.Float64()
 
-	// 4. กำไร/ขาดทุน
-	profit := totalBetAmount - totalWinAmount
+	// 4. กำไร/ขาดทุน (decimal)
+	profitDec := totalBetDec.Sub(decimal.NewFromFloat(totalWinAmount))
+	profit, _ := profitDec.Float64()
 
 	return SettleRoundOutput{
 		RoundID:        input.RoundID,

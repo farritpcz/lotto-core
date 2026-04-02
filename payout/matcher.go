@@ -16,6 +16,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/shopspring/decimal"
+
 	"github.com/farritpcz/lotto-core/betting"
 	"github.com/farritpcz/lotto-core/types"
 )
@@ -154,13 +156,16 @@ func isPermutation(a, b string) bool {
 //   - totalWinAmount: เงินรางวัลรวม
 //   - totalLosers: จำนวนคนแพ้
 func SummarizeResults(results []types.BetResult) (totalWinners int, totalWinAmount float64, totalLosers int) {
+	// ⚠️ ใช้ decimal สำหรับ summation ป้องกัน precision error
+	totalDec := decimal.Zero
 	for _, r := range results {
 		if r.IsWin {
 			totalWinners++
-			totalWinAmount += r.WinAmount
+			totalDec = totalDec.Add(decimal.NewFromFloat(r.WinAmount))
 		} else {
 			totalLosers++
 		}
 	}
+	totalWinAmount, _ = totalDec.Float64()
 	return
 }
