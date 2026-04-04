@@ -104,20 +104,16 @@ func GenerateRoundNumber(lotteryType types.LotteryType, date time.Time, roundNo 
 	dateStr := date.Format("20060102")
 
 	switch lotteryType {
-	case types.LotteryTypeThai, types.LotteryTypeLao:
-		return dateStr
-
-	case types.LotteryTypeStockTH, types.LotteryTypeStockForeign:
-		if roundNo <= 1 {
-			return dateStr + "-AM"
-		}
-		return dateStr + "-PM"
-
+	// หวยยี่กี → "YYYYMMDD-RR" (เลขรอบ 01-88)
 	case types.LotteryTypeYeekee:
 		return fmt.Sprintf("%s-%02d", dateStr, roundNo)
 
+	// หวยทั่วไป → "YYYYMMDD" (1 รอบ/วัน)
 	default:
-		return fmt.Sprintf("%s-%02d", dateStr, roundNo)
+		if roundNo > 0 {
+			return fmt.Sprintf("%s-%02d", dateStr, roundNo)
+		}
+		return dateStr
 	}
 }
 
