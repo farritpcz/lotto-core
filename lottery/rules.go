@@ -38,22 +38,30 @@ var DefaultRules = map[types.LotteryType]LotteryRule{
 		Type: types.LotteryTypeThai,
 		Name: "หวยไทย (ใต้ดิน)",
 		AllowedBetTypes: []types.BetType{
-			types.BetType3Top,
-			types.BetType3Tod,
-			types.BetType2Top,
-			types.BetType2Bottom,
-			types.BetTypeRunTop,
-			types.BetTypeRunBot,
+			types.BetType3Top,    // 3 ตัวบน
+			types.BetType3Tod,    // 3 ตัวโต๊ด
+			types.BetType3Front,  // 3 ตัวหน้า
+			types.BetType3Bottom, // 3 ตัวล่าง
+			types.BetType4Top,    // 4 ตัวบน
+			types.BetType4Tod,    // 4 ตัวโต๊ด
+			types.BetType2Top,    // 2 ตัวบน
+			types.BetType2Bottom, // 2 ตัวล่าง
+			types.BetTypeRunTop,  // วิ่งบน
+			types.BetTypeRunBot,  // วิ่งล่าง
 		},
 		DefaultRates: map[types.BetType]float64{
-			types.BetType3Top:    900,  // 3 ตัวบน: จ่าย 900 เท่า
-			types.BetType3Tod:    150,  // 3 ตัวโต๊ด: จ่าย 150 เท่า
-			types.BetType2Top:    90,   // 2 ตัวบน: จ่าย 90 เท่า
-			types.BetType2Bottom: 90,   // 2 ตัวล่าง: จ่าย 90 เท่า
-			types.BetTypeRunTop:  3.2,  // วิ่งบน: จ่าย 3.2 เท่า
-			types.BetTypeRunBot:  4.2,  // วิ่งล่าง: จ่าย 4.2 เท่า
+			types.BetType3Top:    900,  // 3 ตัวบน
+			types.BetType3Tod:    150,  // 3 ตัวโต๊ด
+			types.BetType3Front:  450,  // 3 ตัวหน้า
+			types.BetType3Bottom: 450,  // 3 ตัวล่าง
+			types.BetType4Top:    6000, // 4 ตัวบน
+			types.BetType4Tod:    250,  // 4 ตัวโต๊ด
+			types.BetType2Top:    90,   // 2 ตัวบน
+			types.BetType2Bottom: 90,   // 2 ตัวล่าง
+			types.BetTypeRunTop:  3.2,  // วิ่งบน
+			types.BetTypeRunBot:  4.2,  // วิ่งล่าง
 		},
-		IsAutoResult: false, // admin กรอกผลเอง
+		IsAutoResult: false,
 		Description:  "ออกผลวันที่ 1 และ 16 ของทุกเดือน",
 	},
 
@@ -126,6 +134,151 @@ var DefaultRules = map[types.LotteryType]LotteryRule{
 		Description:  "ออกผลตามตลาดหุ้นต่างประเทศ",
 	},
 
+	// ─── หวยฮานอย: ทุกวัน ──────────────────────────────────────
+	types.LotteryTypeHanoi: {
+		Type: types.LotteryTypeHanoi,
+		Name: "หวยฮานอย",
+		AllowedBetTypes: []types.BetType{
+			types.BetType3Top, types.BetType3Tod,
+			types.BetType2Top, types.BetType2Bottom,
+			types.BetTypeRunTop, types.BetTypeRunBot,
+		},
+		DefaultRates: map[types.BetType]float64{
+			types.BetType3Top: 850, types.BetType3Tod: 120,
+			types.BetType2Top: 90, types.BetType2Bottom: 90,
+			types.BetTypeRunTop: 3.2, types.BetTypeRunBot: 4.2,
+		},
+		IsAutoResult: false,
+		Description:  "ออกผลทุกวัน 18:30",
+	},
+
+	// ─── หวยมาเลย์ ──────────────────────────────────────────
+	types.LotteryTypeMalay: {
+		Type: types.LotteryTypeMalay,
+		Name: "หวยมาเลย์",
+		AllowedBetTypes: []types.BetType{
+			types.BetType3Top, types.BetType3Tod,
+			types.BetType2Top, types.BetType2Bottom,
+			types.BetTypeRunTop, types.BetTypeRunBot,
+		},
+		DefaultRates: map[types.BetType]float64{
+			types.BetType3Top: 850, types.BetType3Tod: 120,
+			types.BetType2Top: 90, types.BetType2Bottom: 90,
+			types.BetTypeRunTop: 3.2, types.BetTypeRunBot: 4.2,
+		},
+		IsAutoResult: false,
+		Description:  "ออกผลตามรอบมาเลเซีย",
+	},
+
+	// ─── หวยลาว Star (9+) ───────────────────────────────────
+	types.LotteryTypeLao9: {
+		Type: types.LotteryTypeLao9,
+		Name: "หวยลาว Star",
+		AllowedBetTypes: []types.BetType{
+			types.BetType3Top, types.BetType3Tod,
+			types.BetType2Top, types.BetType2Bottom,
+			types.BetTypeRunTop, types.BetTypeRunBot,
+		},
+		DefaultRates: map[types.BetType]float64{
+			types.BetType3Top: 850, types.BetType3Tod: 120,
+			types.BetType2Top: 90, types.BetType2Bottom: 90,
+			types.BetTypeRunTop: 3.2, types.BetTypeRunBot: 4.2,
+		},
+		IsAutoResult: false,
+		Description:  "ออกผลหลายรอบต่อวัน",
+	},
+
+	// ─── หวย ธกส. ────────────────────────────────────────────
+	types.LotteryTypeBAAC: {
+		Type: types.LotteryTypeBAAC,
+		Name: "หวย ธกส.",
+		AllowedBetTypes: []types.BetType{
+			types.BetType3Top, types.BetType3Tod,
+			types.BetType2Top, types.BetType2Bottom,
+			types.BetTypeRunTop, types.BetTypeRunBot,
+		},
+		DefaultRates: map[types.BetType]float64{
+			types.BetType3Top: 900, types.BetType3Tod: 150,
+			types.BetType2Top: 90, types.BetType2Bottom: 90,
+			types.BetTypeRunTop: 3.2, types.BetTypeRunBot: 4.2,
+		},
+		IsAutoResult: false,
+		Description:  "ออกผลตามรอบ ธกส.",
+	},
+
+	// ─── หวยออมสิน ───────────────────────────────────────────
+	types.LotteryTypeGSB: {
+		Type: types.LotteryTypeGSB,
+		Name: "หวยออมสิน",
+		AllowedBetTypes: []types.BetType{
+			types.BetType3Top, types.BetType3Tod,
+			types.BetType2Top, types.BetType2Bottom,
+			types.BetTypeRunTop, types.BetTypeRunBot,
+		},
+		DefaultRates: map[types.BetType]float64{
+			types.BetType3Top: 900, types.BetType3Tod: 150,
+			types.BetType2Top: 90, types.BetType2Bottom: 90,
+			types.BetTypeRunTop: 3.2, types.BetTypeRunBot: 4.2,
+		},
+		IsAutoResult: false,
+		Description:  "ออกผลตามรอบออมสิน",
+	},
+
+	// ─── ยี่กี 5 นาที ───────────────────────────────────────
+	types.LotteryTypeYeekee5: {
+		Type: types.LotteryTypeYeekee5,
+		Name: "ยี่กี 5 นาที",
+		AllowedBetTypes: []types.BetType{
+			types.BetType3Top, types.BetType3Tod,
+			types.BetType2Top, types.BetType2Bottom,
+			types.BetTypeRunTop, types.BetTypeRunBot,
+		},
+		DefaultRates: map[types.BetType]float64{
+			types.BetType3Top: 800, types.BetType3Tod: 100,
+			types.BetType2Top: 85, types.BetType2Bottom: 85,
+			types.BetTypeRunTop: 3.0, types.BetTypeRunBot: 4.0,
+		},
+		IsAutoResult: true,
+		Description:  "ออกผลทุก 5 นาที",
+	},
+
+	// ─── ยี่กี VIP ──────────────────────────────────────────
+	types.LotteryTypeYeekeeVIP: {
+		Type: types.LotteryTypeYeekeeVIP,
+		Name: "ยี่กี VIP",
+		AllowedBetTypes: []types.BetType{
+			types.BetType3Top, types.BetType3Tod,
+			types.BetType2Top, types.BetType2Bottom,
+			types.BetTypeRunTop, types.BetTypeRunBot,
+		},
+		DefaultRates: map[types.BetType]float64{
+			types.BetType3Top: 900, types.BetType3Tod: 150,
+			types.BetType2Top: 92, types.BetType2Bottom: 92,
+			types.BetTypeRunTop: 3.5, types.BetTypeRunBot: 4.5,
+		},
+		IsAutoResult: true,
+		Description:  "ยี่กี VIP — rate สูงกว่าปกติ",
+	},
+
+	// ─── ยี่กี 15 นาที (มาตรฐาน, alias ของ YEEKEE) ─────────
+	types.LotteryTypeYeekee15: {
+		Type: types.LotteryTypeYeekee15,
+		Name: "ยี่กี 15 นาที",
+		AllowedBetTypes: []types.BetType{
+			types.BetType3Top, types.BetType3Tod,
+			types.BetType2Top, types.BetType2Bottom,
+			types.BetTypeRunTop, types.BetTypeRunBot,
+		},
+		DefaultRates: map[types.BetType]float64{
+			types.BetType3Top: 850, types.BetType3Tod: 120,
+			types.BetType2Top: 90, types.BetType2Bottom: 90,
+			types.BetTypeRunTop: 3.2, types.BetTypeRunBot: 4.2,
+		},
+		IsAutoResult: true,
+		Description:  "ออกผลทุก 15 นาที (88 รอบ/วัน)",
+	},
+
+	// ─── ยี่กี (default) ────────────────────────────────────
 	types.LotteryTypeYeekee: {
 		Type: types.LotteryTypeYeekee,
 		Name: "หวยยี่กี",
