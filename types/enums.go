@@ -16,43 +16,98 @@ package types
 type LotteryType string
 
 const (
-	LotteryTypeThai          LotteryType = "THAI"           // หวยไทย (ใต้ดิน) — ออกผล 1, 16 ของเดือน
-	LotteryTypeLao           LotteryType = "LAO"            // หวยลาว — ออกผลตามรอบลาว
-	LotteryTypeHanoi         LotteryType = "HANOI"          // หวยฮานอย — ออกผลทุกวัน 18:30
-	LotteryTypeMalay         LotteryType = "MALAY"          // หวยมาเลย์ — ออกผลตามรอบมาเลเซีย
-	LotteryTypeLao9          LotteryType = "LAO_STAR"       // หวยลาว Star (9+) — ออกผลหลายรอบ/วัน
-	LotteryTypeBAAC          LotteryType = "BAAC"           // หวย ธกส. — ออกผลตามรอบ ธกส.
-	LotteryTypeGSB           LotteryType = "GSB"            // หวยออมสิน — ออกผลตามรอบออมสิน
-	LotteryTypeStockTH       LotteryType = "STOCK_TH"       // หวยหุ้นไทย — ออกผลตามตลาดหุ้น จ-ศ
-	LotteryTypeStockForeign  LotteryType = "STOCK_FOREIGN"  // หวยหุ้นต่างประเทศ — ออกผลตามตลาดแต่ละประเทศ
-	LotteryTypeYeekee        LotteryType = "YEEKEE"         // หวยยี่กี — ออกผลทุก 15 นาที (88 รอบ/วัน)
-	LotteryTypeYeekee5       LotteryType = "YEEKEE_5"       // ยี่กี 5 นาที — ออกผลทุก 5 นาที
-	LotteryTypeYeekee15      LotteryType = "YEEKEE_15"      // ยี่กี 15 นาที (มาตรฐาน)
-	LotteryTypeYeekeeVIP     LotteryType = "YEEKEE_VIP"     // ยี่กี VIP — rate สูงกว่าปกติ
-	LotteryTypeCustom        LotteryType = "CUSTOM"         // หวยอื่นๆ — configurable
+	// ── กลุ่มหวยไทย ─────────────────────────────────────────────────
+	LotteryTypeThaiGov LotteryType = "THAI_GOV" // หวยรัฐบาลไทย — ออกผล 1, 16 ของเดือน
+	LotteryTypeBAAC    LotteryType = "BAAC"     // หวย ธกส
+	LotteryTypeGSB     LotteryType = "GSB"      // หวย ออมสิน
+
+	// ── ยี่กี ────────────────────────────────────────────────────────
+	LotteryTypeYeekee LotteryType = "YEEKEE" // หวยยี่กี — ออกผลทุก 15 นาที
+
+	// ── กลุ่มหวยลาว ─────────────────────────────────────────────────
+	LotteryTypeLaoVIP       LotteryType = "LAO_VIP"         // หวยลาว VIP
+	LotteryTypeLaoPattana   LotteryType = "LAO_PATTANA"     // หวยลาวพัฒนา
+	LotteryTypeLaoStar      LotteryType = "LAO_STAR"        // หวยลาวสตาร์
+	LotteryTypeLaoSamakkee  LotteryType = "LAO_SAMAKKEE"    // หวยลาวสามัคคี
+	LotteryTypeLaoThakhek   LotteryType = "LAO_THAKHEK_VIP" // หวยลาวท่าแขก VIP
+
+	// ── กลุ่มหวยฮานอย ───────────────────────────────────────────────
+	LotteryTypeHanoi        LotteryType = "HANOI"          // หวยฮานอย
+	LotteryTypeHanoiVIP     LotteryType = "HANOI_VIP"      // หวยฮานอย VIP
+	LotteryTypeHanoiPattana LotteryType = "HANOI_PATTANA"  // หวยฮานอยพัฒนา
+
+	// ── มาเลย์ ──────────────────────────────────────────────────────
+	LotteryTypeMalay LotteryType = "MALAY" // หวยมาเลย์
+
+	// ── กลุ่มหวยหุ้น (26 ตัว) ───────────────────────────────────────
+	LotteryTypeStockRussiaVIP   LotteryType = "STOCK_RUSSIA_VIP"
+	LotteryTypeStockDJVIP       LotteryType = "STOCK_DJ_VIP"
+	LotteryTypeStockHSIVIPAM    LotteryType = "STOCK_HSI_VIP_AM"
+	LotteryTypeStockTaiwanVIP   LotteryType = "STOCK_TAIWAN_VIP"
+	LotteryTypeStockKoreaVIP    LotteryType = "STOCK_KOREA_VIP"
+	LotteryTypeStockHSIVIPPM    LotteryType = "STOCK_HSI_VIP_PM"
+	LotteryTypeStockNikkeiAM    LotteryType = "STOCK_NIKKEI_AM"
+	LotteryTypeStockChinaAM     LotteryType = "STOCK_CHINA_AM"
+	LotteryTypeStockHSIAM       LotteryType = "STOCK_HSI_AM"
+	LotteryTypeStockTaiwan      LotteryType = "STOCK_TAIWAN"
+	LotteryTypeStockNikkeiPM    LotteryType = "STOCK_NIKKEI_PM"
+	LotteryTypeStockKorea       LotteryType = "STOCK_KOREA"
+	LotteryTypeStockChinaPM     LotteryType = "STOCK_CHINA_PM"
+	LotteryTypeStockHSIPM       LotteryType = "STOCK_HSI_PM"
+	LotteryTypeStockTHPM        LotteryType = "STOCK_TH_PM"
+	LotteryTypeStockSingapore   LotteryType = "STOCK_SINGAPORE"
+	LotteryTypeStockIndia       LotteryType = "STOCK_INDIA"
+	LotteryTypeStockUK          LotteryType = "STOCK_UK"
+	LotteryTypeStockGermany     LotteryType = "STOCK_GERMANY"
+	LotteryTypeStockRussia      LotteryType = "STOCK_RUSSIA"
+	LotteryTypeStockDJ          LotteryType = "STOCK_DJ"
+	LotteryTypeStockGermanyVIP  LotteryType = "STOCK_GERMANY_VIP"
+	LotteryTypeStockUKVIP       LotteryType = "STOCK_UK_VIP"
+	LotteryTypeStockNikkeiVIPPM LotteryType = "STOCK_NIKKEI_VIP_PM"
+	LotteryTypeStockNikkeiVIPAM LotteryType = "STOCK_NIKKEI_VIP_AM"
+	LotteryTypeStockChinaVIPPM  LotteryType = "STOCK_CHINA_VIP_PM"
+	LotteryTypeStockChinaVIPAM  LotteryType = "STOCK_CHINA_VIP_AM"
 )
 
 // IsValid ตรวจสอบว่า LotteryType ถูกต้องหรือไม่
 func (lt LotteryType) IsValid() bool {
 	switch lt {
-	case LotteryTypeThai, LotteryTypeLao, LotteryTypeHanoi, LotteryTypeMalay,
-		LotteryTypeLao9, LotteryTypeBAAC, LotteryTypeGSB,
-		LotteryTypeStockTH, LotteryTypeStockForeign,
-		LotteryTypeYeekee, LotteryTypeYeekee5, LotteryTypeYeekee15, LotteryTypeYeekeeVIP,
-		LotteryTypeCustom:
+	// หวยไทย
+	case LotteryTypeThaiGov, LotteryTypeBAAC, LotteryTypeGSB:
+		return true
+	// ยี่กี
+	case LotteryTypeYeekee:
+		return true
+	// หวยลาว
+	case LotteryTypeLaoVIP, LotteryTypeLaoPattana, LotteryTypeLaoStar,
+		LotteryTypeLaoSamakkee, LotteryTypeLaoThakhek:
+		return true
+	// หวยฮานอย
+	case LotteryTypeHanoi, LotteryTypeHanoiVIP, LotteryTypeHanoiPattana:
+		return true
+	// มาเลย์
+	case LotteryTypeMalay:
+		return true
+	// หวยหุ้น
+	case LotteryTypeStockRussiaVIP, LotteryTypeStockDJVIP, LotteryTypeStockHSIVIPAM,
+		LotteryTypeStockTaiwanVIP, LotteryTypeStockKoreaVIP, LotteryTypeStockHSIVIPPM,
+		LotteryTypeStockNikkeiAM, LotteryTypeStockChinaAM, LotteryTypeStockHSIAM,
+		LotteryTypeStockTaiwan, LotteryTypeStockNikkeiPM, LotteryTypeStockKorea,
+		LotteryTypeStockChinaPM, LotteryTypeStockHSIPM, LotteryTypeStockTHPM,
+		LotteryTypeStockSingapore, LotteryTypeStockIndia, LotteryTypeStockUK,
+		LotteryTypeStockGermany, LotteryTypeStockRussia, LotteryTypeStockDJ,
+		LotteryTypeStockGermanyVIP, LotteryTypeStockUKVIP,
+		LotteryTypeStockNikkeiVIPPM, LotteryTypeStockNikkeiVIPAM,
+		LotteryTypeStockChinaVIPPM, LotteryTypeStockChinaVIPAM:
 		return true
 	}
 	return false
 }
 
 // IsAutoResult ตรวจสอบว่าประเภทหวยนี้ออกผลอัตโนมัติหรือไม่
-// true = ระบบออกผลเอง (Yeekee), false = admin กรอกผล (Thai, Lao, Stock)
+// true = ระบบออกผลเอง (Yeekee), false = admin กรอกผล
 func (lt LotteryType) IsAutoResult() bool {
-	switch lt {
-	case LotteryTypeYeekee, LotteryTypeYeekee5, LotteryTypeYeekee15, LotteryTypeYeekeeVIP:
-		return true
-	}
-	return false
+	return lt == LotteryTypeYeekee
 }
 
 // =============================================================================
